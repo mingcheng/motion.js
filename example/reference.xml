@@ -1,0 +1,197 @@
+<style type="text/css">
+    #motion {
+        background: #ccc;
+        width: 250px;
+        height: 250px;
+        position: relative;
+        overflow: hidden;
+        float: left;
+    }
+
+    #motion #ball {
+        width: 40px;
+        height: 40px;
+        background: red;
+        position:absolute;
+        *font-size: 0px;
+
+    }
+
+    #motion #flag {
+        background: yellow;
+        width: 4px;
+        height: 4px;
+        position:absolute;
+        *font-size: 0px;
+    }
+
+    #status {
+        float: left;
+        margin: 0px 10px;
+    }
+
+    #status .item {
+        margin: 1em 0px;
+    }
+
+    #chart {
+        *zoom: 1;
+        margin: 0px 20px 10px 0px;;
+    }
+
+    #chart {
+        position: relative;
+        width: 250px;
+        height: 250px;
+        background: #eaeaea;
+    }
+
+    #chart div {
+        width:4px;
+        height:4px;
+        cursor:pointer;
+        background: green;
+        position: absolute;
+        *font-size: 0px;
+        -webkit-border-radius:1px;
+        -moz-border-radius:1px;
+        border-radius:1px;
+    }
+
+    #chart:selected {
+        background: red;
+    }
+
+    .main {
+        overflow: hidden;
+        *zoom: 1;
+    }
+
+    .main .motion, .main #chart {
+        float: left;
+        margin: 0px 10px;
+    }
+</style>
+<div class="content">
+    <h2>点击左边灰色框查看相应动画路径</h2>
+    <div class="main">
+    <div id="motion"></div>
+    <div id="chart"></div>
+    </div>
+    <div id="status">
+        <div class="item">
+            时长（毫秒）：
+            <select id="duration">
+                <option value="100">100</option>
+                <option value="200">200</option>
+                <option value="500" selected="selected">500</option>
+                <option value="800">800</option>
+                <option value="1000">1000</option>
+                <option value="1200">1200</option>
+                <option value="1500">1500</option>
+                <option value="1800">1800</option>
+                <option value="2000">2000</option>
+            </select>
+        </div>
+        <div class="item">
+            FPS：
+            <select id="fps">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="35" selected="selected">35</option>
+                <option value="50">50</option>
+                <option value="80">80</option>
+            </select>
+        </div>
+        <div class="item">
+            动画类型：<select id="type"></select>
+        </div>
+        <div class="item">
+            <div id="result"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var motionContainer = document.getElementById('motion');
+    var ball = document.createElement('div');
+    var flag = document.createElement('div');
+    var chart = document.getElementById('chart');
+    var type = document.getElementById('type');
+    var duration = document.getElementById('duration');
+    var fps = document.getElementById('fps');
+    var result = document.getElementById('result');
+    var motion = null, setPosition = function(el, position) {
+        el.style.left = position[0] + 'px';
+        el.style.top  = position[1] + 'px';
+    }
+
+    for(var i in Motion.getTweens()) {
+        var o = document.createElement("option");
+        o.text = o.value= i;
+        type.options.add(o);
+    }
+
+    ball.id = "ball"; flag.id = "flag";
+    motionContainer.appendChild(ball);
+    motionContainer.appendChild(flag);
+
+    motionContainer.onclick = function(e) {
+        e = e || window.event;
+        if (motion) {
+            motion.stop();
+        }
+
+        var position = {
+            x:{from: parseInt(ball.style.left) || 0, to: (e.clientX || e.pageX) - motionContainer.offsetLeft}, 
+            y:{from: parseInt(ball.style.top)  || 0, to: (e.clientY || e.pageY) - motionContainer.offsetTop + 
+                (document.documentElement.scrollTop || document.body.scrollTop)}
+        };
+        setPosition(flag, [position.x.to, position.y.to]);
+        chart.innerHTML = '';
+
+        // 动画逻辑
+        var d = duration.options[duration.selectedIndex || 0].value;
+        var t = type.options[type.selectedIndex || 0].value;
+        motion = new Motion(t, d);
+
+        // 初始化
+        motion.onInit = function() {
+            this.fps = fps.options[fps.selectedIndex || 0].value;
+        };
+
+        // 动画开始时
+        motion.onStart = function() {
+            this.timeStart = new Date();
+        };
+
+        // 动画行进时
+        motion.onTweening = function() {
+            var dot = document.createElement('div');
+            var x = position.x, y = position.y;
+            var move = {x: this.equation(x.from, x.to), y: this.equation(y.from, y.to)};
+            var dotx = move.x / motionContainer.clientWidth * chart.clientWidth;
+            var doty = move.y / motionContainer.clientHeight * chart.clientHeight;
+            setPosition(dot, [dotx, doty]);
+            dot.title = this.current;
+            setPosition(ball, [move.x, move.y]);
+            chart.appendChild(dot);
+        };
+
+        // 动画已经完成时
+        motion.onComplete = function() {
+            var res = [
+                '动画类型：' + this.tween, 
+                'fps：' + this.fps ,
+                '计划运行 ' + this.frames + ' 帧',
+                '实际运行 '+ this.current +' 帧',
+                '指定运行：' + this.duration + '毫秒',
+                '实际运行：' + (new Date() - this.timeStart) + '毫秒'
+            ];
+            result.innerHTML = res.join('<br />');
+        };
+
+        // 开始动画
+        motion.start();
+    };
+</script>

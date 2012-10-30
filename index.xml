@@ -1,0 +1,290 @@
+<div class="content">
+    <h2>概览</h2>
+
+    <p>这是名为 <strong>Motion</strong> 的 <strong>Javascript 动画组件</strong>。它能够帮助您不依赖
+    Javascript 框架即可简单、高效地完成复杂的动画效果。</p>
+
+    <h2>特性</h2>
+    <ul>
+        <li>高效率、不依赖任何 Javascript 框架</li>
+        <li>经过严格的测试，可信赖</li>
+        <li>苗条、只有 3KB <sup>注：压缩后</sup></li>
+        <li>支持回调（callback），扩展容易</li>
+        <li>支持多浏览器，让您摆脱复杂的动画效果、重新关注业务本身</li>
+        <li>遵循 <a href="http://www.opensource.org/licenses/mit-license.php" target="_blank">MIT 协议</a>，自由使用</li>
+    </ul>
+
+    <h2>下载</h2>
+    <p>您可以从下面的连接获得最新稳定版本</p>
+    <ul>
+        <li><a href="http://spirity.googlecode.com/files/motion-0.3-min.js">压缩版（适用生产环境）</a></li>
+        <li><a href="http://spirity.googlecode.com/files/motion-0.3.js">源代码版本</a></li>
+    </ul>
+
+    <p>还可以<a href="http://code.google.com/p/spirity/downloads/list">查看所有 Motion 的历史版本</a>，见证 Motion 的完善历程。</p>
+
+    <p>您还可以直接<a href="http://spirity.googlecode.com/svn/trunk/javascript/motion/">通过 SVN </a>获得最新测试版本（不适用于实际生产环境）。</p>
+
+    <h2>起步</h2>
+    <p>动画，从哲学的角度上讲就是不断改变自身的属性。所以在开始进行动画时，您需要了解以下些参数：</p>
+    <ul>
+        <li><em>区间</em>动画改变元素属性的区间值</li>
+        <li><em>时长</em>动画展现的时长</li>
+        <li><em>类型</em>现为动画函数，Motion 内置常见动画类型</li>
+    </ul>
+
+    <p><!--有关动画更详细的说明，请参见这里。-->下面是简单的实例：</p>
+
+    <h3>实例化</h3>
+
+    <p>在引入动画组件后，首先就是实例化一个动画类。例如：</p>
+
+<pre>
+var motion = new Motion('linear', 500);</pre>
+
+    <p>其中包含了两个参数，分别是<em>动画类型</em>和<em>时长</em>。</p>
+
+    <h3>设置回调</h3>
+
+    <p>Motion 提供回调的方式扩展，常见的回调使用 onTweening，即在动画运行中的进行的操作：</p>
+
+<pre>
+var sample = document.getElementById('sample');
+var interval = {from: 0, to: 500};
+motion.onTweening = function() {
+    sample.style.width = this.equation(interval.from, interval.to) + 'px';
+}; </pre>
+
+    <p>其中，this.equation 则是根据上述实例化时生成的动画函数，他需要两个参数 --
+    即<em>动画区间</em>的开始和结束，返回的是当前帧的位置。</p>
+
+
+    <p>下面是目前 Motion 支持的回调接口：</p>
+    <ul>
+        <li><em>onInit</em>在初始化时运行</li>
+        <li><em>onStart</em>在动画开始时运行</li>
+        <li><em>onTweening</em>在动画进行时运行</li>
+        <li><em>onComplete</em>在动画完成时运行</li>
+    </ul>
+
+    <h4>0.3 版本以后新增</h4>
+    <ul>
+        <li><em>onSleep</em>在暂停动画时运行</li>
+        <li><em>onWakeup</em>在继续开始时运行</li>
+    </ul>
+
+    <h3>开始和停止</h3>
+
+    <p>设置好动画参数以后，即可开始动画查看最终效果。</p>
+
+    <p>开始动画使用：</p>
+<pre>
+motion.start();</pre>
+
+    <p>停止动画使用：</p>
+<pre>
+motion.sleep();</pre>
+
+<h4>0.3 版本以后新增</h4>
+
+    <p>暂停动画使用：</p>
+<pre>
+motion.wakeup();</pre>
+
+    <p>恢复动画使用：</p>
+<pre>
+motion.stop();</pre>
+
+
+    <p>例如，通常我们会将其绑定到某元素的事件中开始动画：</p>
+
+<pre>
+var trigger = document.getElementById('trigger');
+trigger.onclick = function() {
+    if (motion.tweening) { // 如果动画在行进中，则停止
+        motion.stop();
+    }
+    motion.start(); // 开始动画
+};</pre>
+
+
+    <h3>万事俱备</h3>
+
+    <p>就这样我们完成了基本的动画，我们来看下效果。</p>
+
+    <div class="example-content">
+        <div class="example" id="example1"></div>
+        <button class="trigger" id="trigger1">点击开始动画</button>
+        <script type="text/javascript">
+            var motion1 = new Motion('linear', 500);
+            var example1 = document.getElementById('example1');
+            var trigger1 = document.getElementById('trigger1');
+
+            motion1.onTweening = function() {
+                example1.style.width = this.equation(0, 500) + 'px';
+            };
+
+            trigger1.onclick = function() {
+                if (motion1.tweening) { // 如果动画在行进中，则停止
+                    motion1.stop();
+                }
+                motion1.start(); // 开始动画
+            };
+        </script>
+    </div>
+
+    <p>好了，我们来看下最终代码：</p>
+
+<pre>
+var motion  = new Motion('linear', 500);
+var sample  = document.getElementById('sample');
+var trigger = document.getElementById('trigger');
+
+motion.onTweening = function() {
+    sample.style.width = this.equation(0, 500) + 'px';
+};
+
+trigger.onclick = function() {
+    if (motion.tweening) { // 如果动画在行进中，则停止
+        motion.stop();
+    }
+    motion.start(); // 开始动画
+};</pre>
+
+
+    <h3>更快更好</h3>
+
+    <p>如果我们想换个动画效果，那么只要该一下参数就可以啦。例如上面的例子，我们改成</p>
+
+    <pre>var motion = new Motion('backOut', 500);</pre>
+
+    <div class="example-content">
+        <div class="example" id="example2"></div>
+        <button class="trigger" id="trigger2">点击开始动画</button>
+        <script type="text/javascript">
+            var motion2 = new Motion('backOut', 500);
+            var example2 = document.getElementById('example2');
+            var trigger2 = document.getElementById('trigger2');
+
+            motion2.onTweening = function() {
+                example2.style.width = this.equation(0, 500) + 'px';
+            };
+
+            trigger2.onclick = function() {
+                if (motion2.tweening) { // 如果动画在行进中，则停止
+                    motion2.stop();
+                }
+                motion2.start(); // 开始动画
+            };
+        </script>
+    </div>
+
+    <p>然后再点击试试看，这会很容易，对不？ </p>
+    
+    <p>如果需要查看所有 Motion 内置的动画类型，您可使用：</p>
+
+<pre>
+Motion.getTweens();</pre>
+
+    <p>它将返回一个对象（Object），其中包含此组件内置的所有动画公式。</p>
+
+    
+    <h2>样例</h2>
+
+    <p>我希望通过 Motion 能够实现尽可能多的动画效果，下面是些样例。
+    如果您也有精彩的例子，欢迎您提交给我。</p>
+
+    <dl>
+        <dt><a href="example/reference" target="_blank">运行轨迹</a></dt>
+        <dd><p>根据动画参数，返回相应的动画轨迹以及状态。</p></dd>
+
+        <dt><a href="example/charts" target="_blank">柱状统计图</a></dt>
+        <dd>
+        <p>根据上述的例子，发展而来的柱状统计图。</p>
+        </dd>
+
+        <!--
+        <dt><a href="example/slider">卡盘</a></dt>
+        <dd>
+        <p>常见的卡盘脚本，动画部分使用本组件。</p>
+        </dd>
+        -->
+    </dl>
+
+    <h2>问答</h2>
+    <dl>
+        <dt>天啊，又多了款这样（类似）的脚本，让我如何选择？</dt>
+        <dd><p>没有最好的，只有更适合的。或许其他同类型的脚本也能很好的
+        完成工作（包括很多库中的动画组件能够完成更好的效果）。</p>
+        
+        <p>本人编写该组件的目的，除了能让您能高效率完成动画效果的
+        同时，也希望您能了解动画组件的原理。</p>
+
+        <p>而且完成这些复杂效果只需要 3KB （压缩后）并且可以定制，何乐而不为 :^)</p>
+        </dd>
+
+        <dt>该动画组件支持哪些浏览器？</dt>
+        <dd>
+        <p>经过本人的测试，主流的浏览器普遍都被支持。其中包括 Internet
+        Explorer(6/7/8) 、最新版本的 Firefox、Safari、Chrome 以及
+        Opera，其他支持 Javascript 的浏览器也应该可被支持。</p>
+        
+        <p>欢迎您提供相应的其他浏览器的兼容情况。</p>
+        </dd>
+
+        <dt>为什么使用 this.equation，而非直接内部计算出当前帧的位置？</dt>
+        <dd><p>动画有多种类型，但从实质上说就是不断的改变某具体对象
+        的属性值。本人认为动画组件应该做的，只要提供公式，然后计算在相应的帧改变的位置即可。</p>
+
+        <p>同时这样做的另个好处就是可以同时控制多个动作，而不需要声
+        明多个动画组件（只要他们的动画类型、时长都一致）。</p>
+        </dd>
+
+        <dt>我想重复运行某个动画，怎么办？</dt>
+        <dd>
+        <p>可以考虑回调实现改功能，例如在动画完成时重新执行开始</p>
+<pre>
+motion.onComplete = function() {
+    this.start();
+};</pre>
+        <p>当然可以考虑加入相应的参数，但我发现使用回调也能很好、而且很清楚的工作。</p>
+
+        </dd>
+
+        <dt>我发现了个 Bug，怎么办？</dt>
+        <dd>
+        <p>在您发现是 Motion 本身的 Bug 时，欢迎您提出来并主动联系我。
+        如果您对于 Motion 有更好的优化意见和建议，也欢迎您不吝提出。</p>
+        </dd>
+
+        <dt>怎样才能联系到作者？</dt>
+        <dd><p>您可以通过电子邮件或者 Gtalk 和我联系 i.feelinglucky[at]gmail.com；
+        或者访问<a href="http://www.gracecode.com/">我的 Blog </a>。</p></dd>
+    </dl>
+
+<!--
+    <h2>捐助</h2>
+    <p><a href="#">[donation]</a></p>
+    <p>如果该组件对您有用，欢迎您支持本项目继续发展。您可以随意捐助任何数目的资金，
+    如果您愿意，您的名字和连接将出现在 Motion 支持列表中。</p>
+    <p>列表按照捐助时间先后排序：</p>
+    <table>
+        <thead>
+            <tr>
+                <th>捐助人</th>
+                <th>日期</th>
+                <th>备注</th>
+                <th>金额</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+-->
+</div>

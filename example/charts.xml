@@ -1,0 +1,68 @@
+<style type="text/css">
+    .charts-content {
+        width: 600px;
+    }
+
+    .charts-content .charts {
+        height: 1.5em;
+        text-align: center;
+        width: 0px;
+    }
+
+    .charts-content .charts5 {
+        background:#f7ca9b;
+        border:1px solid #c18f5a;
+    }
+
+    .charts-content .charts4 {
+        background:#bde877;
+        border:1px solid #478f45;
+    }
+
+    .charts-content .charts3 {
+        background:#6c81b6;
+        border:1px solid #586e97;
+    }
+
+    .charts-content .charts2 {
+        background:#a5cbd6;
+        border:1px solid #8aabb4;
+    }
+
+    .charts-content .charts1 {
+        background:#d843b3;
+        border:1px solid #b0248d;
+    }
+</style>
+<div class="charts-content content" id="charts">
+    <h3>今天午饭吃什么呢？</h3>
+    <dl>
+        <dt>蛋炒饭</dt>
+        <dd><div class="charts charts1">15%</div></dd>
+        <dt>炒粉干</dt>
+        <dd><div class="charts charts2">15%</div></dd>
+        <dt>兰州拉面</dt>
+        <dd><div class="charts charts3">35%</div></dd>
+        <dt>方便面</dt>
+        <dd><div class="charts charts4">20%</div></dd>
+        <dt>无所谓</dt>
+        <dd><div class="charts charts5">15%</div></dd>
+    </dl>
+</div>
+<script type="text/javascript">
+    var charts = document.getElementById('charts');
+    var items = charts.getElementsByTagName('div');
+    for (var i = 0, data = [], len = items.length; i < len; i++) {
+        data.push({from: 0, to: parseInt(items[i].innerHTML, 10)});
+    }
+
+    var motion = new Motion('backOut', 800);
+    motion.onTweening = function() {
+        for (var i = 0, len = items.length; i < len; i++) {
+            var interval = data[i];
+            items[i].style.width = this.equation(interval.from, interval.to) + '%';
+        }
+    };
+
+    motion.start();
+</script>

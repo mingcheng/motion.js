@@ -1,0 +1,38 @@
+<div class="content">
+    <div class="example-content">
+        <div class="example" id="example"></div>
+        <button class="trigger" id="start">开始</button>
+        <button class="trigger" id="stop">停止</button>
+        <button class="trigger" id="sleep">暂停</button>
+        <button class="trigger" id="wakeup">继续</button>
+        <script type="text/javascript">
+            var motion  = new Motion('linear', 2000);
+            var example = document.getElementById('example');
+            var start = document.getElementById('start');
+            var stop = document.getElementById('stop');
+            var sleep = document.getElementById('sleep');
+            var wakeup = document.getElementById('wakeup');
+
+            motion.onTweening = function() {
+                example.style.width = this.equation(0, 500) + 'px';
+            };
+
+            start.onclick = function() {
+                motion.start();
+            };
+
+            stop.onclick = function() {
+                motion.stop();
+            };
+
+            sleep.onclick = function() {
+                motion.sleep();
+            };
+
+            wakeup.onclick = function() {
+                motion.wakeup();
+            };
+
+        </script>
+    </div>
+</div>

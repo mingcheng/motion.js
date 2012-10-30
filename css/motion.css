@@ -1,0 +1,178 @@
+/* vim: set et sw=4 ts=4 sts=4 fdm=marker ff=unix fenc=utf8 */
+/**
+ * Motion Homepage
+ *
+ * @author mingcheng<i.feelinglucky@gmail.com>
+ * @date   2009-04-05
+ * @link   http://www.gracecode.com/
+ */
+
+@import url(../css/reset-min.css);
+
+body {
+    font-family: Constantia,serif;
+    background: #27466B;
+    font-size: 14px;
+    color: #333;
+}
+
+h2, h3, h4, h5 {
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 18px;
+}
+
+h3, h4 {
+    font-size: 14px;
+}
+
+a:link, a:visited {
+    color: #27466B;
+}
+
+a:hover {
+    font-weight: bold;
+}
+
+.main-wrap .content h2, .main-wrap .content h3,
+.main-wrap .content h4, .main-wrap .content h5 {
+    color: #27466B;
+}
+
+#logo {
+    background: url(../accessory/logo-motion-200.png) no-repeat top left;
+    width: 200px;
+}
+
+#logo a {
+    display: block;
+    height: 54px;
+    text-indent: -999em;
+    overflow: hidden;
+}
+
+.main-wrap {
+    -webkit-border-radius:5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+
+    background: #fff;
+    width: 650px;
+    margin: 50px auto;
+    padding: 10px;
+}
+
+.main-wrap .header, .main-wrap .content, .main-wrap .foot {
+    margin-bottom: 10px;
+    overflow: hidden;
+              *zoom: 1;
+}
+
+.main-wrap .content p {
+    line-height: 1.2em;
+    text-indent: 2em;
+    margin: .5em;
+}
+
+.main-wrap .content h2 {
+    margin-top: 2em;
+}
+
+.main-wrap .content h3 {
+    text-indent: 1em;
+    margin-top: 1.5em;
+}
+
+.main-wrap .content h4 {
+    text-indent: 2em;
+    margin-top: 1em;
+}
+
+
+.main-wrap .content em, .main-wrap .content strong {
+    font-weight: bold;
+}
+
+.main-wrap .content ul, .main-wrap .content ol{
+    margin: .5em .5em .5em 4em;
+}
+
+.main-wrap .content ul em, .main-wrap .content ol em{
+    margin: 0 .5em;
+}
+
+.main-wrap .content pre {
+    margin: 1em 2em;
+    background: #eaeaea;
+    border: 1px solid #eaeaea;
+    padding: .5em 1em;
+    -webkit-border-radius:5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.main-wrap .content pre:hover,
+.main-wrap .content pre:focus {
+    border: 1px solid #ccc;
+}
+
+.main-wrap .content .example-content {
+    width: 500px;
+    margin: .5em auto;
+    height: 80px;
+}
+
+.main-wrap .example-content button, .main-wrap .content .example {
+    -webkit-border-radius:2px;
+    -moz-border-radius:2px;
+    border-radius:2px;
+}
+
+.main-wrap .example-content button {
+    border: 1px solid #27466B;
+    background: #fff;
+    padding: 2px 5px;
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+}
+
+.main-wrap .content .example {
+    border: 1px solid #27466B;
+    background: #5D80A9;
+    height: 30px;
+    margin: .5em 0px;
+    width: 0px;
+}
+
+.main-wrap .content dl {
+
+}
+
+.main-wrap .content dt {
+    font-weight: bold;
+    margin: 1em 0em .5em 2em;
+}
+
+.main-wrap .content dd {
+    margin: 0em 4em;
+}
+
+.main-wrap .content table {
+    width: 600px;
+    margin: .5em auto;
+}
+
+.main-wrap .content th , .main-wrap .content td {
+    padding: 2px 5px;
+}
+
+.main-wrap .header #logo {
+    position: relative;
+}
+
+.main-wrap .foot {
+    margin-bottom: 0px;
+}
